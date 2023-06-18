@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Spring App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+</head>
+<body>
+<div class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
+    <div class="container">
+        <a class="navbar-brand" href="./index.html">Products Spring App</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav">
+                <li class="nav-item" data-bs-theme="light">
+                    <a class="nav-link" href="#">Add product</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br>
+<div class="container-xl">
+    <div class="row">
+        <form onsubmit="event.preventDefault(); updateProduct()" class="col-md-12">
+            <fieldset>
+                <legend>New product</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name" class="form-label mt-4">Product name</label>
+                            <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name" required>
+                            <small id="nameHelp" class="form-text text-muted">The name should be unique.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="form-label mt-4">Product description</label>
+                            <textarea class="form-control" id="description" rows="3"></textarea>
+                            <small id="descriptionHelp" class="form-text text-muted">The description is optional.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label mt-4">Product price</label>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" id="price" aria-label="Amount (to the nearest dollar)" required>
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="stock" class="form-label mt-4">Stock</label>
+                            <input type="number" class="form-control" id="stock" aria-describedby="stockHelp" placeholder="Enter stock" required>
+                            <small id="stockHelp" class="form-text text-muted">Stock must be greater than or equal to 1.</small>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Update product</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<script src="./js/update.js"></script>
+</body>
+</html>
