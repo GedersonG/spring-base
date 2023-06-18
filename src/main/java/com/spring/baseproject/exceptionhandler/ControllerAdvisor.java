@@ -1,5 +1,7 @@
 package com.spring.baseproject.exceptionhandler;
 
+import com.spring.baseproject.exception.AlreadyExistsException;
+import com.spring.baseproject.exception.BadValueException;
 import com.spring.baseproject.exception.NoDataFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,20 @@ public class ControllerAdvisor {
             NoDataFoundException ignoredNoDataFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleAlreadyExistsException(
+            AlreadyExistsException ignoredAlreadyExistsException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ALREADY_EXISTS.getMessage()));
+    }
+
+    @ExceptionHandler(BadValueException.class)
+    public ResponseEntity<Map<String, String>> handleBadValueException(
+            BadValueException ignoredBadValueException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.BAD_VALUE.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

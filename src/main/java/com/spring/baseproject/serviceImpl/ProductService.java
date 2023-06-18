@@ -5,10 +5,12 @@ import com.spring.baseproject.dto.request.ProductRequestDto;
 import com.spring.baseproject.dto.request.ProductUpdateRequestDto;
 import com.spring.baseproject.dto.response.ProductResponseDto;
 import com.spring.baseproject.entity.ProductEntity;
+import com.spring.baseproject.exception.AlreadyExistsException;
 import com.spring.baseproject.exception.NoDataFoundException;
 import com.spring.baseproject.mapper.request.IProductRequestDtoMapper;
 import com.spring.baseproject.mapper.response.IProductResponseDtoMapper;
 import com.spring.baseproject.service.IProductService;
+import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,12 @@ import java.util.List;
 public class ProductService implements IProductService {
 
     private final IProductRepository productRepository;
-    private final IProductRequestDtoMapper productRequestDtoMapper;
-    private final IProductResponseDtoMapper productResponseDtoMapper;
+
+    @Resource
+    private IProductRequestDtoMapper productRequestDtoMapper;
+
+    @Resource
+    private IProductResponseDtoMapper productResponseDtoMapper;
 
     @Override
     public List<ProductResponseDto> getAllProducts() {
@@ -35,13 +41,15 @@ public class ProductService implements IProductService {
     @Override
     public void saveProduct(ProductRequestDto productRequestDto) {
         existsByName(productRequestDto.getName());
+        if (productRequestDto.getDescription() == null)
+            productRequestDto.setDescription("");
 
         productRepository.save(productRequestDtoMapper.toEntity(productRequestDto));
     }
 
     @Override
     public ProductResponseDto getProductById(Long id) {
-        ProductEntity product = productRepository.findById(id).orElseThrow(NoDataFoundException::new);
+        ProductEntity product = productRepository.findById(id).orElseThrow(AlreadyExistsException::new);
 
         return productResponseDtoMapper.toResponse(product);
     }
@@ -64,7 +72,11 @@ public class ProductService implements IProductService {
             existsByName(productUpdateRequestDto.getName());
         }
 
-        productRepository.updateProduct(product);
+        if (productUpdateRequestDto.getDescription() == null)
+            productUpdateRequestDto.setDescription("");
+
+        ProductEntity updatedProduct = productRequestDtoMapper.dtoUpdateToEntity(productUpdateRequestDto, id);
+        productRepository.updateProduct(updatedProduct);
     }
 
     private void existsById(Long id) {
@@ -74,6 +86,6 @@ public class ProductService implements IProductService {
 
     private void existsByName(String name) {
         if (productRepository.existsByName(name))
-            throw new NoDataFoundException();
+            throw new AlreadyExistsException();
     }
 }

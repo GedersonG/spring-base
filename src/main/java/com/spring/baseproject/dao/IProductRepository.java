@@ -12,7 +12,7 @@ public interface IProductRepository extends JpaRepository<ProductEntity, Long> {
     @Modifying
     @Query("UPDATE ProductEntity p SET " +
            "p.name = COALESCE(:#{#productDto.name}, p.name), " +
-           "p.description = COALESCE(:#{#productDto.description}, p.description), " +
+           "p.description = :#{#productDto.description}, " +
            "p.price = COALESCE(:#{#productDto.price}, p.price), " +
            "p.stock = COALESCE(:#{#productDto.stock}, p.stock) " +
            "WHERE p.idProduct = :#{#productDto.idProduct}"

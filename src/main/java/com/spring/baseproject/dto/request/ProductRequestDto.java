@@ -17,7 +17,7 @@ public class ProductRequestDto {
     private String description;
 
     @NotNull(message = "El precio es obligatorio.")
-    @Min(value = 1, message = "El precio minimo debe ser 0.")
+    @Min(value = 1, message = "El precio minimo debe ser 1.")
     @Max(value = 10000000, message = "El precio máxmimo admitido es de 10000000.")
     private int price;
 
